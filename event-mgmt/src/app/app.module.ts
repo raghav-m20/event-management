@@ -5,18 +5,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EventListComponent } from './event-list/event-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DataService } from './helpers/data.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventDetailsComponent } from './event-details/event-details.component';
 import { ConfirmDialogComponent } from './helpers/confirm-dialog/confirm-dialog.component';
+import { LoaderComponent } from './helpers/loader/loader.component';
+import { HttpRequestInterceptor } from './helpers/http.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     EventListComponent,
     EventDetailsComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,11 @@ import { ConfirmDialogComponent } from './helpers/confirm-dialog/confirm-dialog.
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [DataService],
+  providers: [DataService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpRequestInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
