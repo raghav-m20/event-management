@@ -1,0 +1,24 @@
+@mixin cursorPointer {
+    cursor: pointer;
+}
+
+.description-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 40px;
+    @include cursorPointer();
+}
+
+.cursor-pointer {
+    @include cursorPointer();
+}
+
+.my-table-header,
+.my-table-body {
+    text-align: -webkit-center;
+}
+
+.my-container {
+    margin-top: 5rem !important;
+}

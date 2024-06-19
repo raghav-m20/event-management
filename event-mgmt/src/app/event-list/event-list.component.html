@@ -1,0 +1,69 @@
+<div class="container my-container">
+    <h3 class="text-center">My Events</h3>
+    <div class="card mt-5">
+        <div class="card-body" *ngIf="!showMessage">
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-6 col-8">
+                    <label for="itemsPerPage" class="form-label me-2">Items per page:</label>
+                    <select id="itemsPerPage" class="form-select d-inline w-auto" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange($event)">
+                        <option *ngFor="let size of itemsPerPageOptions" [value]="size">{{ size }}</option>
+                    </select>
+                    <input type="text" class="form-control d-inline w-auto ms-2 mt-2 mt-md-0" [(ngModel)]="searchText" (input)="applyFilter()" placeholder="Search...">
+                </div>
+                <div class="col-md-6 col-4 text-end mt-2 mt-md-0">
+                    <button class="btn btn-success w-md-auto" (click)="openDetails()">Add Event</button>
+                </div>
+            </div>
+            <ng-container class="myeventlist" *ngIf="eventList && eventList.length > 0">
+                <div class="table-responsive">
+                    <table class="table table-responsive-sm table-striped">
+                        <thead class="my-table-header">
+                            <tr>
+                                <th scope="col">Event Title</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="my-table-body">
+                            <tr *ngFor="let event of paginatedEventList; let i = index">
+                                <td>{{ event.title }}</td>
+                                <td>{{ event.location }}</td>
+                                <td class="description-cell" title="{{ event.description }}">{{ event.description }}</td>
+                                <td>{{ event.date | date: 'dd/MM/yyyy hh:mm a' }}</td>
+                                <td>
+                                    <button class="btn btn-primary" (click)="openDetails(event.eventid)">Edit</button>
+                                    <button class="btn btn-danger ms-2" (click)="deleteEvent(event.eventid)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="table-pagination" class="my-pagination" *ngIf="eventList.length > itemsPerPage">
+                    <ul class="pagination justify-content-center flex-wrap">
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <a class="page-link" (click)="setPage(currentPage - 1)">Previous</a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="currentPage === page">
+                            <a class="page-link" (click)="setPage(page)">{{ page }}</a>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <a class="page-link" (click)="setPage(currentPage + 1)">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </ng-container>
+            <ng-container *ngIf="eventList.length === 0 && !apiFail">
+                <div class="alert alert-warning" role="alert">No events scheduled.</div>
+            </ng-container>
+            <ng-container *ngIf="eventList.length === 0 && apiFail">
+                <div class="alert alert-danger" role="alert">Events could not be fetched, please try again later.</div>
+            </ng-container>
+        </div>
+        <div class="card-body" *ngIf="showMessage">
+            <div class="alert alert-success" role="alert" *ngIf="deleteSuccess">Event deleted successfully.</div>
+            <div class="alert alert-danger" role="alert" *ngIf="deleteFail">Event could not be deleted.</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="container my-container">
+    <div class="card">
+        <div class="card-header text-center d-flex justify-content-between align-items-center">
+            <span class="btn back-btn p-0" (click)="goBack()">
+               &lt; <!-- You can use Bootstrap Icons if available -->
+            </span>
+            <h4 class="mb-0">{{header}}</h4>
+            <div></div> <!-- Empty div to balance the flex layout -->
+        </div>
+        <div class="card-body" *ngIf="!showMessage">
+            <form [formGroup]="eventDetailsForm">
+                <div class="form-group">
+                    <label for="title">Event Title <span class="text-danger">*</span></label>
+                    <input type="text" id="title" class="form-control" formControlName="title">
+                    <div class="text-danger" *ngIf="(eventDetailsForm.controls['title'].dirty || eventDetailsForm.controls['title'].touched) && eventDetailsForm.controls['title'].invalid">
+                        <span *ngIf="eventDetailsForm.controls['title'].errors?.['required']">This field is required.</span>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="date">Event Date <span class="text-danger">*</span></label>
+                    <input type="date" id="date" class="form-control" formControlName="date">
+                    <div class="text-danger" *ngIf="(eventDetailsForm.controls['date'].dirty || eventDetailsForm.controls['date'].touched) && eventDetailsForm.controls['date'].invalid">
+                        <span *ngIf="eventDetailsForm.controls['date'].errors?.['required']">This field is required.</span>
+                        <span *ngIf="eventDetailsForm.controls['date'].errors?.['invalidDateError']">Event date cannot be a past date.</span>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="location">Event Location <span class="text-danger">*</span></label>
+                    <input type="text" id="location" class="form-control" formControlName="location">
+                    <div class="text-danger" *ngIf="(eventDetailsForm.controls['location'].dirty || eventDetailsForm.controls['location'].touched) && eventDetailsForm.controls['location'].invalid">
+                        <span *ngIf="eventDetailsForm.controls['location'].errors?.['required']">This field is required.</span>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="description">Event Description <span class="text-danger">*</span></label>
+                    <textarea id="description" class="form-control" formControlName="description"></textarea>
+                    <div class="text-danger" *ngIf="(eventDetailsForm.controls['description'].dirty || eventDetailsForm.controls['description'].touched) && eventDetailsForm.controls['description'].invalid">
+                        <span *ngIf="eventDetailsForm.controls['description'].errors?.['required']">This field is required.</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body" *ngIf="showMessage">
+            <div class="alert alert-success" role="alert" *ngIf="addSuccess">Event added successfully.</div>
+            <div class="alert alert-success" role="alert" *ngIf="updateSuccess">Event updated successfully.</div>
+            <div class="alert alert-danger" role="alert" *ngIf="updateFail">Event could not be updated.</div>
+            <div class="alert alert-danger" role="alert" *ngIf="addFail">Event could not be added.</div>
+        </div>
+        <div class="modal-footer justify-content-center mb-4" *ngIf="!showMessage">
+            <div class="text-center mt-3">
+                <button class="btn btn-success" [disabled]="eventDetailsForm.invalid" (click)="operateOnEvent('post')" *ngIf="isAdd">Save</button>
+                <button class="btn btn-primary" *ngIf="isEdit && !editClicked" (click)="editForm()">Edit</button>
+                <button class="btn btn-success" [disabled]="eventDetailsForm.invalid" (click)="operateOnEvent('put')" *ngIf="isEdit && editClicked">Update</button>
+                <!-- <button class="btn btn-light ms-2" (click)="close()">Cancel</button> -->
+            </div>
+        </div>
+    </div>
+</div>
