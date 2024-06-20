@@ -11,6 +11,7 @@
                     <input type="text" class="form-control d-inline w-auto ms-2 mt-2 mt-md-0" [(ngModel)]="searchText" (input)="applyFilter()" placeholder="Search...">
                 </div>
                 <div class="col-md-6 col-4 text-end mt-2 mt-md-0">
+                    <button class="btn btn-primary me-2" (click)="getEventList()">Refresh</button>
                     <button class="btn btn-success w-md-auto" (click)="openDetails()">Add Event</button>
                 </div>
             </div>
