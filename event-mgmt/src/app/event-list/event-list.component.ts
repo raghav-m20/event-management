@@ -105,6 +105,7 @@ export class EventListComponent implements OnInit {
         setTimeout(()=>{
           this.showMessage = false;
           this.deleteSuccess = false;
+          this.getEventList();
         }, 3000)
       }
       else if (data === 'failed') {
@@ -113,6 +114,7 @@ export class EventListComponent implements OnInit {
         setTimeout(()=>{
           this.showMessage = false;
           this.deleteFail = false;
+          this.getEventList();
         }, 3000)
       }
     })
